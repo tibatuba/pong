@@ -10,7 +10,7 @@ let wall = new Audio();
 let userScore = new Audio();
 let comScore = new Audio();
 
-hit.src = "sounds/hit.mp3";
+hit.src = "pong/movie_1.mp3";
 wall.src = "sounds/wall.mp3";
 comScore.src = "sounds/comScore.mp3";
 userScore.src = "sounds/userScore.mp3";
@@ -19,11 +19,11 @@ userScore.src = "sounds/userScore.mp3";
 const ball = {
     x : canvas.width/2,
     y : canvas.height/2,
-    radius : 10,
+    radius : 15.5,
     velocityX : 5,
     velocityY : 5,
     speed : 7,
-    color : "WHITE"
+    color : "#ADD8E6"
 }
 
 // User Paddle
@@ -33,17 +33,17 @@ const user = {
     width : 10,
     height : 100,
     score : 0,
-    color : "WHITE"
+    color : "#ADD8E6"
 }
 
 // COM Paddle
 const com = {
     x : canvas.width - 10, // - width of paddle
-    y : (canvas.height - 100)/2, // -100 the height of paddle
+    y : (canvas.height - 80)/2, // -100 the height of paddle
     width : 10,
     height : 100,
     score : 0,
-    color : "WHITE"
+    color : "#ffffe0"
 }
 
 // NET
@@ -52,7 +52,7 @@ const net = {
     y : 0,
     height : 10,
     width : 2,
-    color : "WHITE"
+    color : "#7F00FF "
 }
 
 // draw a rectangle, will be used to draw paddles
@@ -123,12 +123,23 @@ function update(){
     if( ball.x - ball.radius < 0 ){
         com.score++;
         comScore.play();
+        window.alert("AI got a point"); // display a message when Ai gets a point
         resetBall();
+
     }else if( ball.x + ball.radius > canvas.width){
         user.score++;
         userScore.play();
+        window.alert("You got a point");//display a message when u get a point
+
         resetBall();
+
+    }else if(com.score >= 20){ //stop game when AI gets 20
+        window.alert("AI won this game! Reload page to play again.");
+
+    }else if(user.score >= 20){ //stop game when user gets 20
+        window.alert("You won this game! Reload page to play again.");
     }
+    
 
     // the ball has a velocity
     ball.x += ball.velocityX;
@@ -136,7 +147,7 @@ function update(){
 
     // computer plays for itself, and we must be able to beat it
     // simple AI
-    com.y += ((ball.y - (com.y + com.height/2)))*0.1;
+    com.y += ((ball.y - (com.y + com.height/2)))*0.15;
 
     // when the ball collides with bottom and top walls we inverse the y velocity.
     if(ball.y - ball.radius < 0 || ball.y + ball.radius > canvas.height){
@@ -169,7 +180,7 @@ function update(){
         ball.velocityY = ball.speed * Math.sin(angleRad);
 
         // speed up the ball everytime a paddle hits it.
-        ball.speed += 0.1;
+        ball.speed += 0.15;
     }
 }
 
